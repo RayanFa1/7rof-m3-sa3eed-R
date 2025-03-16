@@ -19,52 +19,20 @@
             height: 100vh;
         }
 
-        /* شاشة التحميل */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: black;
-            color: white;
+        /* الشبكة السداسية */
+        .hex-container {
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+
+        .hex-row {
+            display: flex;
             justify-content: center;
-            z-index: 100;
         }
 
-        .loading-text {
-            font-size: 30px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .spinner {
-            border: 6px solid rgba(255, 255, 255, 0.3);
-            border-top: 6px solid white;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* الشبكة */
-        .hex-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 80px);
-            grid-template-rows: repeat(5, 80px);
-            gap: 5px;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            margin-top: 20px;
+        .hex-row:nth-child(even) {
+            margin-right: 40px; /* إزاحة الصفوف الزوجية */
         }
 
         .hex {
@@ -78,6 +46,7 @@
             font-size: 26px;
             font-weight: bold;
             border: 2px solid black;
+            margin: -10px; /* إزالة الفراغات بين الأشكال */
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
@@ -93,7 +62,7 @@
         }
 
         button {
-            margin-top: 10px;
+            margin-top: 20px;
             padding: 10px 20px;
             font-size: 18px;
             font-weight: bold;
@@ -107,37 +76,12 @@
         button:hover {
             background-color: gray;
         }
-
-        /* نص "مبرووك" */
-        .congrats {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 50px;
-            font-weight: bold;
-            color: white;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 20px 40px;
-            border-radius: 10px;
-            display: none;
-            z-index: 10;
-        }
     </style>
 </head>
 <body>
 
-    <!-- شاشة التحميل -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-text">حروف مع سعيد</div>
-        <div class="spinner"></div>
-    </div>
-
-    <div class="hex-grid" id="grid"></div>
+    <div class="hex-container" id="grid"></div>
     <button onclick="generateGrid()">تحديث الحروف</button>
-    <button onclick="celebrate()">احتفال</button>
-    
-    <div class="congrats" id="congrats">مبرووك!</div>
 
     <script>
         const arabicLetters = "أبتثجحخدذرزسشصضطظعغفقكلمنهوي".split("");
@@ -155,48 +99,39 @@
             grid.innerHTML = "";
 
             let shuffledLetters = shuffleArray([...arabicLetters]).slice(0, 25);
+            let index = 0;
 
-            for (let i = 0; i < 25; i++) {
-                const hex = document.createElement("div");
-                hex.classList.add("hex");
-                hex.textContent = shuffledLetters[i];
+            for (let i = 0; i < 5; i++) {
+                const row = document.createElement("div");
+                row.classList.add("hex-row");
 
-                hex.addEventListener("click", () => {
-                    if (hex.classList.contains("green")) {
-                        hex.classList.remove("green");
-                        hex.classList.add("orange");
-                    } else if (hex.classList.contains("orange")) {
-                        hex.classList.remove("orange");
-                    } else {
-                        hex.classList.add("green");
-                    }
-                });
+                for (let j = 0; j < 5; j++) {
+                    if (index >= shuffledLetters.length) break;
+                    
+                    const hex = document.createElement("div");
+                    hex.classList.add("hex");
+                    hex.textContent = shuffledLetters[index];
 
-                grid.appendChild(hex);
+                    hex.addEventListener("click", () => {
+                        if (hex.classList.contains("green")) {
+                            hex.classList.remove("green");
+                            hex.classList.add("orange");
+                        } else if (hex.classList.contains("orange")) {
+                            hex.classList.remove("orange");
+                        } else {
+                            hex.classList.add("green");
+                        }
+                    });
+
+                    row.appendChild(hex);
+                    index++;
+                }
+
+                grid.appendChild(row);
             }
         }
 
-        function celebrate() {
-            document.getElementById("congrats").style.display = "block";
-
-            const hexes = document.querySelectorAll(".hex");
-
-            setInterval(() => {
-                hexes.forEach(hex => {
-                    const colors = ["green", "orange", "white"];
-                    let randomColor = colors[Math.floor(Math.random() * colors.length)];
-                    hex.className = "hex " + randomColor;
-                });
-            }, 500);
-        }
-
-        // شاشة التحميل لمدة 5 ثواني ثم عرض الصفحة
-        window.onload = function() {
-            setTimeout(() => {
-                document.getElementById("loadingScreen").style.display = "none";
-                generateGrid();
-            }, 5000);
-        };
+        generateGrid();
     </script>
 
 </body>
