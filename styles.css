@@ -17,8 +17,10 @@ body {
 .hex-grid {
     display: grid;
     grid-template-columns: repeat(5, 80px);
+    grid-auto-rows: 70px;
     gap: 5px;
     max-width: 400px;
+    justify-content: center;
 }
 
 .hex {
@@ -35,6 +37,7 @@ body {
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.highlight {
-    background-color: green;
+/* تنظيم الصفوف لتشكيل شكل سداسي */
+.hex:nth-child(odd) {
+    margin-left: 40px;
 }
