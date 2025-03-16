@@ -77,19 +77,27 @@
     <button onclick="generateGrid()">تحديث الحروف</button>
 
     <script>
-        const arabicLetters = "أبتثجحخدذرزسشصضطظعغفقكلمنهوي";
-        
-        function getRandomLetter() {
-            return arabicLetters[Math.floor(Math.random() * arabicLetters.length)];
+        const arabicLetters = "أبتثجحخدذرزسشصضطظعغفقكلمنهوي".split("");
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
         }
 
         function generateGrid() {
             const grid = document.getElementById("grid");
             grid.innerHTML = "";
+
+            let shuffledLetters = shuffleArray([...arabicLetters]).slice(0, 25);
+
             for (let i = 0; i < 25; i++) {
                 const hex = document.createElement("div");
                 hex.classList.add("hex");
-                hex.textContent = getRandomLetter();
+                hex.textContent = shuffledLetters[i];
+
                 hex.addEventListener("click", () => {
                     if (hex.classList.contains("green")) {
                         hex.classList.remove("green");
@@ -100,6 +108,7 @@
                         hex.classList.add("green");
                     }
                 });
+
                 grid.appendChild(hex);
             }
         }
