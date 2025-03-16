@@ -69,12 +69,30 @@
         button:hover {
             background-color: gray;
         }
+
+        /* نص "مبرووك" */
+        .congrats {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 50px;
+            font-weight: bold;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px 40px;
+            border-radius: 10px;
+            display: none;
+        }
     </style>
 </head>
 <body>
 
     <div class="hex-grid" id="grid"></div>
     <button onclick="generateGrid()">تحديث الحروف</button>
+    <button onclick="celebrate()">احتفال</button>
+    
+    <div class="congrats" id="congrats">مبرووك!</div>
 
     <script>
         const arabicLetters = "أبتثجحخدذرزسشصضطظعغفقكلمنهوي".split("");
@@ -113,8 +131,15 @@
             }
         }
 
-        generateGrid();
-    </script>
+        function celebrate() {
+            document.getElementById("congrats").style.display = "block";
 
-</body>
-</html>
+            const hexes = document.querySelectorAll(".hex");
+
+            setInterval(() => {
+                hexes.forEach(hex => {
+                    const colors = ["green", "orange", "white"];
+                    let randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    hex.className = "hex " + randomColor;
+                });
+            }, 500);
