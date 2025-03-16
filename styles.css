@@ -1,0 +1,46 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+    direction: rtl;
+}
+
+h1 {
+    margin-top: 20px;
+    color: #333;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+.cell {
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    color: white;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* تناوب الألوان */
+.cell:nth-child(odd) {
+    background-color: #ff8c00; /* برتقالي */
+}
+
+.cell:nth-child(even) {
+    background-color: #008000; /* أخضر */
+}
+
+/* تأثير عند التحويم */
+.cell:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
