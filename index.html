@@ -3,37 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سباق الحروف العربية</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>شبكة الحروف</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to top, orange 15%, green 40%, green 60%, orange 85%);
+            direction: rtl;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .hex-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 80px);
+            grid-template-rows: repeat(5, 80px);
+            gap: 5px;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .hex {
+            width: 80px;
+            height: 92px;
+            background-color: white;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 26px;
+            font-weight: bold;
+            border: 2px solid black;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .hex.green {
+            background-color: green;
+            color: white;
+        }
+
+        .hex.orange {
+            background-color: orange;
+            color: white;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            background-color: black;
+            color: white;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: gray;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="hex-grid">
-            <div class="hex">ف</div>
-            <div class="hex">س</div>
-            <div class="hex">ط</div>
-            <div class="hex">ش</div>
-            <div class="hex">ظ</div>
-            <div class="hex">ض</div>
-            <div class="hex">ل</div>
-            <div class="hex">ح</div>
-            <div class="hex">أ</div>
-            <div class="hex">خ</div>
-            <div class="hex">ب</div>
-            <div class="hex">ث</div>
-            <div class="hex">و</div>
-            <div class="hex highlight">ك</div>
-            <div class="hex">ر</div>
-            <div class="hex">د</div>
-            <div class="hex">غ</div>
-            <div class="hex">ق</div>
-            <div class="hex">م</div>
-            <div class="hex">ع</div>
-            <div class="hex">ي</div>
-            <div class="hex">ج</div>
-            <div class="hex">ز</div>
-            <div class="hex">س</div>
-        </div>
-    </div>
+
+    <div class="hex-grid" id="grid"></div>
+    <button onclick="generateGrid()">تحديث الحروف</button>
+
+    <script>
+        const arabicLetters = "أبتثجحخدذرزسشصضطظعغفقكلمنهوي";
+        
+        function getRandomLetter() {
+            return arabicLetters[Math.floor(Math.random() * arabicLetters.length)];
+        }
+
+        function generateGrid() {
+            const grid = document.getElementById("grid");
+            grid.innerHTML = "";
+            for (let i = 0; i < 25; i++) {
+                const hex = document.createElement("div");
+                hex.classList.add("hex");
+                hex.textContent = getRandomLetter();
+                hex.addEventListener("click", () => {
+                    if (hex.classList.contains("green")) {
+                        hex.classList.remove("green");
+                        hex.classList.add("orange");
+                    } else if (hex.classList.contains("orange")) {
+                        hex.classList.remove("orange");
+                    } else {
+                        hex.classList.add("green");
+                    }
+                });
+                grid.appendChild(hex);
+            }
+        }
+
+        generateGrid();
+    </script>
+
 </body>
 </html>
