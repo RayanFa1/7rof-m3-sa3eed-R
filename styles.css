@@ -5,9 +5,6 @@ body {
     direction: rtl;
     margin: 0;
     padding: 0;
-}
-
-.container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,16 +13,17 @@ body {
 
 .hex-grid {
     display: grid;
-    grid-template-columns: repeat(5, 80px);
-    grid-auto-rows: 70px;
-    gap: 5px;
-    max-width: 400px;
+    grid-template-columns: repeat(6, 80px);
+    grid-template-rows: repeat(5, 69px);
+    gap: 2px; /* تقليل المسافات بين الخلايا */
     justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 .hex {
     width: 80px;
-    height: 80px;
+    height: 92px; /* ضبط الارتفاع ليكون مناسبًا */
     background-color: white;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     display: flex;
@@ -35,9 +33,10 @@ body {
     font-weight: bold;
     border: 2px solid black;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    position: relative;
 }
 
-/* تنظيم الصفوف لتشكيل شكل سداسي */
+/* إزاحة الصفوف الفردية لعمل التأثير السداسي */
 .hex:nth-child(odd) {
-    margin-left: 40px;
+    transform: translateY(20px);
 }
