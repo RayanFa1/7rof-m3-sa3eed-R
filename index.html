@@ -8,7 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background: linear-gradient(to top, orange 15%, green 40%, green 60%, orange 85%);
+            background-color: black;
             direction: rtl;
             margin: 0;
             padding: 0;
@@ -16,50 +16,59 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            height: 100vh;
         }
 
+        /* الخلفية ذات التدرج */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, orange 10%, green 45%, green 55%, orange 90%);
+            z-index: -1;
+        }
+
+        /* الشبكة */
         .hex-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            width: 400px;
+            display: grid;
+            grid-template-columns: repeat(5, 85px);
+            grid-template-rows: repeat(5, 85px);
+            gap: 0;
+            position: relative;
             margin-top: 20px;
         }
 
         .hex {
-            width: 70px;
-            height: 80px;
+            width: 85px;
+            height: 98px;
             background-color: white;
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 26px;
+            font-size: 30px;
             font-weight: bold;
-            border: 2px solid black;
+            border: 3px solid black;
             cursor: pointer;
             transition: background-color 0.3s ease;
             position: relative;
         }
 
-        .hex:nth-child(odd) {
-            margin-top: 10px;
-        }
+        /* وضع حدود للخلايا الخارجية */
+        .hex.top { border-top-color: orange; }
+        .hex.bottom { border-bottom-color: orange; }
+        .hex.left { border-left-color: green; }
+        .hex.right { border-right-color: green; }
 
-        .hex.green {
-            background-color: green;
-            color: white;
-        }
-
-        .hex.orange {
-            background-color: orange;
-            color: white;
-        }
+        .hex.green { background-color: green; color: white; }
+        .hex.orange { background-color: orange; color: white; }
 
         button {
             margin-top: 10px;
-            padding: 10px 20px;
-            font-size: 18px;
+            padding: 12px 25px;
+            font-size: 20px;
             font-weight: bold;
             cursor: pointer;
             border: none;
@@ -72,29 +81,15 @@
             background-color: gray;
         }
 
-        .congrats {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 50px;
-            font-weight: bold;
-            color: white;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 20px 40px;
-            border-radius: 10px;
-            display: none;
-            z-index: 10;
-        }
     </style>
 </head>
 <body>
 
+    <div class="background"></div>
+
     <div class="hex-grid" id="grid"></div>
     <button onclick="generateGrid()">تحديث الحروف</button>
     <button onclick="celebrate()">احتفال</button>
-    
-    <div class="congrats" id="congrats">مبرووك!</div>
 
     <script>
         const arabicLetters = "أبتثجحخدذرزسشصضطظعغفقكلمنهوي".split("");
@@ -110,13 +105,18 @@
         function generateGrid() {
             const grid = document.getElementById("grid");
             grid.innerHTML = "";
-
             let shuffledLetters = shuffleArray([...arabicLetters]).slice(0, 25);
 
             for (let i = 0; i < 25; i++) {
                 const hex = document.createElement("div");
                 hex.classList.add("hex");
                 hex.textContent = shuffledLetters[i];
+
+                // إضافة حدود مخصصة للخلايا الخارجية
+                if (i < 5) hex.classList.add("top"); // الصف العلوي
+                if (i >= 20) hex.classList.add("bottom"); // الصف السفلي
+                if (i % 5 === 0) hex.classList.add("left"); // العمود الأيسر
+                if (i % 5 === 4) hex.classList.add("right"); // العمود الأيمن
 
                 hex.addEventListener("click", () => {
                     if (hex.classList.contains("green")) {
@@ -134,8 +134,6 @@
         }
 
         function celebrate() {
-            document.getElementById("congrats").style.display = "block";
-
             const hexes = document.querySelectorAll(".hex");
 
             setInterval(() => {
@@ -147,9 +145,8 @@
             }, 500);
         }
 
-        window.onload = function() {
-            generateGrid();
-        };
+        // تحميل الشبكة عند بدء التشغيل
+        window.onload = generateGrid;
     </script>
 
 </body>
