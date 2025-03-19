@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="ar">
+<!DOCTYPE html>
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,185 +17,205 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-        }/* شاشة التحميل */
-    .loading-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: black;
-        color: white;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        z-index: 100;
-    }
+        }
 
-    .loading-text {
-        font-size: 30px;
-        font-weight: bold;
-        margin-bottom: 20px;
-    }
+        /* شاشة التحميل */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
 
-    .spinner {
-        border: 6px solid rgba(255, 255, 255, 0.3);
-        border-top: 6px solid white;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        animation: spin 1s linear infinite;
-    }
+        .loading-text {
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
 
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
+        .spinner {
+            border: 6px solid rgba(255, 255, 255, 0.3);
+            border-top: 6px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
 
-    /* الشبكة */
-    .hex-grid {
-        display: grid;
-        grid-template-columns: repeat(5, 80px);
-        grid-template-rows: repeat(5, 80px);
-        gap: 5px;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        margin-top: 20px;
-    }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-    .hex {
-        width: 80px;
-        height: 92px;
-        background-color: white;
-        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 26px;
-        font-weight: bold;
-        border: 2px solid black;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
+        /* الشبكة */
+        .hex-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
 
-    .hex.green {
-        background-color: green;
-        color: white;
-    }
+        .hex-row {
+            display: flex;
+            justify-content: center;
+        }
 
-    .hex.orange {
-        background-color: orange;
-        color: white;
-    }
+        .hex-row:nth-child(even) {
+            margin-right: 40px; /* إزاحة الصفوف الزوجية */
+        }
 
-    button {
-        margin-top: 10px;
-        padding: 10px 20px;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        border: none;
-        background-color: black;
-        color: white;
-        border-radius: 5px;
-    }
+        .hex {
+            width: 80px;
+            height: 92px;
+            background-color: white;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 26px;
+            font-weight: bold;
+            border: 2px solid black;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: -6px; /* تقليل المسافات بين الخلايا */
+        }
 
-    button:hover {
-        background-color: gray;
-    }
+        .hex.green {
+            background-color: green;
+            color: white;
+        }
 
-    /* نص "مبرووك" */
-    .congrats {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 50px;
-        font-weight: bold;
-        color: white;
-        background: rgba(0, 0, 0, 0.7);
-        padding: 20px 40px;
-        border-radius: 10px;
-        display: none;
-        z-index: 10;
-    }
-</style>
+        .hex.orange {
+            background-color: orange;
+            color: white;
+        }
 
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            background-color: black;
+            color: white;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: gray;
+        }
+
+        /* نص "مبرووك" */
+        .congrats {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 50px;
+            font-weight: bold;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px 40px;
+            border-radius: 10px;
+            display: none;
+            z-index: 10;
+        }
+    </style>
 </head>
-<body><!-- شاشة التحميل -->
-<div class="loading-screen" id="loadingScreen">
-    <div class="loading-text">حروف مع سعيد</div>
-    <div class="spinner"></div>
-</div>
+<body>
 
-<div class="hex-grid" id="grid"></div>
-<button onclick="generateGrid()">تحديث الحروف</button>
-<button onclick="celebrate()">احتفال</button>
+    <!-- شاشة التحميل -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-text">حروف مع سعيد</div>
+        <div class="spinner"></div>
+    </div>
 
-<div class="congrats" id="congrats">مبرووك!</div>
+    <div class="hex-container" id="grid"></div>
+    <button onclick="generateGrid()">تحديث الحروف</button>
+    <button onclick="celebrate()">احتفال</button>
+    
+    <div class="congrats" id="congrats">مبرووك!</div>
 
-<script>
-    const arabicLetters = "أبتثجحخدذرزسشصضطظعغفقكلمنهوي".split("");
+    <script>
+        const arabicLetters = "أبتثجحخدذرزسشصضطظعغفقكلمنهوي".split("");
 
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
         }
-        return array;
-    }
 
-    function generateGrid() {
-        const grid = document.getElementById("grid");
-        grid.innerHTML = "";
+        function generateGrid() {
+            const grid = document.getElementById("grid");
+            grid.innerHTML = "";
 
-        let shuffledLetters = shuffleArray([...arabicLetters]).slice(0, 25);
+            let shuffledLetters = shuffleArray([...arabicLetters]).slice(0, 25);
+            let rows = [[], [], [], [], []];
 
-        for (let i = 0; i < 25; i++) {
-            const hex = document.createElement("div");
-            hex.classList.add("hex");
-            hex.textContent = shuffledLetters[i];
+            for (let i = 0; i < 25; i++) {
+                rows[Math.floor(i / 5)].push(shuffledLetters[i]);
+            }
 
-            hex.addEventListener("click", () => {
-                if (hex.classList.contains("green")) {
-                    hex.classList.remove("green");
-                    hex.classList.add("orange");
-                } else if (hex.classList.contains("orange")) {
-                    hex.classList.remove("orange");
-                } else {
-                    hex.classList.add("green");
-                }
+            rows.forEach((row, index) => {
+                const rowDiv = document.createElement("div");
+                rowDiv.classList.add("hex-row");
+
+                row.forEach(letter => {
+                    const hex = document.createElement("div");
+                    hex.classList.add("hex");
+                    hex.textContent = letter;
+
+                    hex.addEventListener("click", () => {
+                        if (hex.classList.contains("green")) {
+                            hex.classList.remove("green");
+                            hex.classList.add("orange");
+                        } else if (hex.classList.contains("orange")) {
+                            hex.classList.remove("orange");
+                        } else {
+                            hex.classList.add("green");
+                        }
+                    });
+
+                    rowDiv.appendChild(hex);
+                });
+
+                grid.appendChild(rowDiv);
             });
-
-            grid.appendChild(hex);
         }
-    }
 
-    function celebrate() {
-        document.getElementById("congrats").style.display = "block";
+        function celebrate() {
+            document.getElementById("congrats").style.display = "block";
 
-        const hexes = document.querySelectorAll(".hex");
+            const hexes = document.querySelectorAll(".hex");
 
-        setInterval(() => {
-            hexes.forEach(hex => {
-                const colors = ["green", "orange", "white"];
-                let randomColor = colors[Math.floor(Math.random() * colors.length)];
-                hex.className = "hex " + randomColor;
-            });
-        }, 500);
-    }
+            setInterval(() => {
+                hexes.forEach(hex => {
+                    const colors = ["green", "orange", "white"];
+                    let randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    hex.className = "hex " + randomColor;
+                });
+            }, 500);
+        }
 
-    // شاشة التحميل لمدة 5 ثواني ثم عرض الصفحة
-    window.onload = function() {
-        setTimeout(() => {
-            document.getElementById("loadingScreen").style.display = "none";
-            generateGrid();
-        }, 5000);
-    };
-</script>
+        // شاشة التحميل لمدة 5 ثواني ثم عرض الصفحة
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById("loadingScreen").style.display = "none";
+                generateGrid();
+            }, 5000);
+        };
+    </script>
 
 </body>
 </html>
-
