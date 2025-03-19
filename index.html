@@ -19,13 +19,49 @@
             height: 100vh;
         }
 
+        /* شاشة التحميل */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .loading-text {
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .spinner {
+            border: 6px solid rgba(255, 255, 255, 0.3);
+            border-top: 6px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* الشبكة السداسية */
         .hex-grid {
             display: flex;
             flex-wrap: wrap;
-            width: 450px; /* العرض الإجمالي للشبكة */
-            margin-top: 20px;
+            width: 450px;
             position: relative;
+            margin-top: 20px;
         }
 
         .hex {
@@ -39,15 +75,29 @@
             font-size: 26px;
             font-weight: bold;
             border: 2px solid black;
-            margin: -5px; /* لإزالة الفراغات بين الخلايا */
+            margin: -5px;
             position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        /* محاذاة كل صف بشكل متدرج */
+        /* إزاحة كل صف فردي */
         .hex:nth-child(5n + 1) {
-            margin-left: 40px; /* إزاحة الصفوف الفردية */
+            margin-left: 40px;
         }
 
+        /* ألوان التغيير */
+        .hex.green {
+            background-color: green;
+            color: white;
+        }
+
+        .hex.orange {
+            background-color: orange;
+            color: white;
+        }
+
+        /* زر التحكم */
         button {
             margin-top: 10px;
             padding: 10px 20px;
@@ -64,12 +114,36 @@
             background-color: gray;
         }
 
+        /* نص "مبروك" عند الاحتفال */
+        .congrats {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 50px;
+            font-weight: bold;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px 40px;
+            border-radius: 10px;
+            display: none;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
 
+    <!-- شاشة التحميل -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-text">حروف مع سعيد</div>
+        <div class="spinner"></div>
+    </div>
+
     <div class="hex-grid" id="grid"></div>
     <button onclick="generateGrid()">تحديث الحروف</button>
+    <button onclick="celebrate()">احتفال</button>
+
+    <div class="congrats" id="congrats">مبرووك!</div>
 
     <script>
         const arabicLetters = "أبتثجحخدذرزسشصضطظعغفقكلمنهوي".split("");
@@ -92,11 +166,43 @@
                 const hex = document.createElement("div");
                 hex.classList.add("hex");
                 hex.textContent = shuffledLetters[i];
+
+                hex.addEventListener("click", () => {
+                    if (hex.classList.contains("green")) {
+                        hex.classList.remove("green");
+                        hex.classList.add("orange");
+                    } else if (hex.classList.contains("orange")) {
+                        hex.classList.remove("orange");
+                    } else {
+                        hex.classList.add("green");
+                    }
+                });
+
                 grid.appendChild(hex);
             }
         }
 
-        window.onload = generateGrid;
+        function celebrate() {
+            document.getElementById("congrats").style.display = "block";
+
+            const hexes = document.querySelectorAll(".hex");
+
+            setInterval(() => {
+                hexes.forEach(hex => {
+                    const colors = ["green", "orange", "white"];
+                    let randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    hex.className = "hex " + randomColor;
+                });
+            }, 500);
+        }
+
+        // شاشة التحميل لمدة 5 ثواني ثم عرض الصفحة
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById("loadingScreen").style.display = "none";
+                generateGrid();
+            }, 5000);
+        };
     </script>
 
 </body>
