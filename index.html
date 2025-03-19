@@ -19,42 +19,6 @@
             height: 100vh;
         }
 
-        /* شاشة التحميل */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: black;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-        }
-
-        .loading-text {
-            font-size: 30px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .spinner {
-            border: 6px solid rgba(255, 255, 255, 0.3);
-            border-top: 6px solid white;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         /* الشبكة السداسية */
         .hex-grid {
             display: flex;
@@ -133,12 +97,6 @@
 </head>
 <body>
 
-    <!-- شاشة التحميل -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-text">حروف مع سعيد</div>
-        <div class="spinner"></div>
-    </div>
-
     <div class="hex-grid" id="grid"></div>
     <button onclick="generateGrid()">تحديث الحروف</button>
     <button onclick="celebrate()">احتفال</button>
@@ -196,13 +154,7 @@
             }, 500);
         }
 
-        // شاشة التحميل لمدة 5 ثواني ثم عرض الصفحة
-        window.onload = function() {
-            setTimeout(() => {
-                document.getElementById("loadingScreen").style.display = "none";
-                generateGrid();
-            }, 5000);
-        };
+        window.onload = generateGrid;
     </script>
 
 </body>
