@@ -33,27 +33,27 @@
         /* الشبكة */
         .hex-grid {
             display: grid;
-            grid-template-columns: repeat(5, 85px);
-            grid-template-rows: repeat(5, 85px);
-            gap: 0;
+            grid-template-columns: repeat(5, 80px);
+            grid-template-rows: repeat(5, 80px);
             position: relative;
             margin-top: 20px;
         }
 
         .hex {
-            width: 85px;
-            height: 98px;
-            background-color: white;
+            width: 80px;
+            height: 92px;
+            background-color: white; /* إزالة اللون الأخضر الافتراضي */
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 30px;
             font-weight: bold;
-            border: 3px solid black;
+            border: 2px solid black;
             cursor: pointer;
             transition: background-color 0.3s ease;
             position: relative;
+            margin: -3px; /* لضبط التداخل بين الحواف */
         }
 
         /* وضع حدود للخلايا الخارجية */
